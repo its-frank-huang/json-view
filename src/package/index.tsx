@@ -48,10 +48,9 @@ const JsonViewComp: Component<{ name: string | number; data: any }> = ({
     case isArray(data):
       content = (
         <details class="jsonView__details">
-          <summary class="jsonView__summary">{name}</summary>
           <Wrap hasSummary type="array">
             <Index each={data}>
-              {(it, i) => <JsonViewComp name={i} data={it} />}
+              {(it, i) => <JsonViewComp name={i} data={it()} />}
             </Index>
           </Wrap>
         </details>
@@ -60,7 +59,6 @@ const JsonViewComp: Component<{ name: string | number; data: any }> = ({
     case isObject(data):
       content = (
         <details class="jsonView__details">
-          <summary class="jsonView__summary">{name}</summary>
           <Wrap hasSummary type="object">
             <Index each={Object.entries(data)}>
               {(it) => <JsonViewComp name={it()[0]} data={it()[1]} />}

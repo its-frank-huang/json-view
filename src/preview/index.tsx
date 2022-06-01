@@ -1,7 +1,7 @@
 /* @refresh reload */
 import { render } from 'solid-js/web';
 import { JsonView } from '../package';
-
+import './preview.css';
 const data = `{
   "TRIGGER_SPLIT": {
     "id": "605dc075adc34fdca8dc4811af9d4f83",
