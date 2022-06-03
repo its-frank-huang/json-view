@@ -20,5 +20,5 @@ export function isBoolean(value: any) {
 }
 
 export function isNull(value: any) {
-  return typeof value === null;
+  return value === null;
 }

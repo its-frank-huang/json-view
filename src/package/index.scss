@@ -1,34 +1,51 @@
 .jsonView__details {
   padding-left: 4ch;
   --name-color: rgb(20 133 189);
+  --preview-name-color: rgb(163, 163, 163);
+  --preview-color: rgb(107, 107, 107);
   --marker-color: rgb(170, 170, 170);
   --content-string-color: rgb(7, 124, 1);
   --content-boolean-color: rgb(125, 13, 153);
-  .jsonView__summary {
-    color: var(--name-color);
-    cursor: pointer;
-    &::marker,
-    &::-webkit-details-marker {
-      color: var(--marker-color);
-    }
+  --content-null-color: rgb(109, 109, 109);
+}
+.jsonView__summary__name {
+  color: var(--name-color);
+  cursor: pointer;
+  &::marker,
+  &::-webkit-details-marker {
+    color: var(--marker-color);
   }
-  .jsonView__content_wrapper {
-    padding-left: 4ch;
-    .jsonView__content__name {
-      color: var(--name-color);
-      margin-right: 1ch;
-      &::after {
-        content: ':';
-      }
-    }
-    .jsonView__content__string .jsonView__content__data {
-      color: var(--content-string-color);
-    }
-    .jsonView__content__boolean .jsonView__content__data {
-      color: var(--content-boolean-color);
-    }
-    .jsonView__content__number .jsonView__content__data {
-      color: var(--content-boolean-color);
-    }
-  }
+}
+.jsonView__summary__preview {
+  color: var(--preview-color);
+}
+
+.jsonView__content_wrapper {
+  padding-left: 4ch;
+}
+.jsonView__content__name {
+  color: var(--name-color);
+}
+.jsonView__summary__preview__fieldName {
+  color: var(--preview-name-color);
+}
+.jsonView__content__name::after,
+.jsonView__summary__preview__fieldName::after {
+  content: ': ';
+}
+.jsonView__content__string .jsonView__content__data,
+.jsonView__summary__preview__value__string {
+  color: var(--content-string-color);
+}
+.jsonView__content__boolean .jsonView__content__data,
+.jsonView__summary__preview__value__boolean {
+  color: var(--content-boolean-color);
+}
+.jsonView__content__number .jsonView__content__data,
+.jsonView__summary__preview__value__number {
+  color: var(--content-boolean-color);
+}
+.jsonView__content__null .jsonView__content__data,
+.jsonView__summary__preview__value__null {
+  color: var(--content-null-color);
 }
