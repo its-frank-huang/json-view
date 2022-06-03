@@ -7,7 +7,7 @@ import {
   isObject,
   isString,
 } from './utils';
-import './index.css';
+import './index.scss';
 
 const JsonViewComp: Component<{ name: string | number; data: any }> = ({
   data,
@@ -20,7 +20,9 @@ const JsonViewComp: Component<{ name: string | number; data: any }> = ({
     hasSummary ? (
       <>
         <summary class="jsonView__summary">{name}</summary>
-        <div class={`jsonView__content jsonView__content__${type}`}>
+        <div
+          class={`jsonView__content jsonView__content_wrapper jsonView__content__${type}`}
+        >
           {children}
         </div>
       </>
@@ -40,7 +42,7 @@ const JsonViewComp: Component<{ name: string | number; data: any }> = ({
       content = <Wrap type="number">{data}</Wrap>;
       break;
     case isBoolean(data):
-      content = <Wrap type="boolean">{data}</Wrap>;
+      content = <Wrap type="boolean">{data === true ? 'true' : 'false'}</Wrap>;
       break;
     case isNull(data):
       content = <Wrap type="null">{data}</Wrap>;
