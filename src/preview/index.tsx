@@ -2,6 +2,7 @@
 import { render } from 'solid-js/web';
 import { JsonView } from '../package';
 import './preview.css';
+export const a = 1;
 const data = `{
   "TRIGGER_SPLIT": {
     "null": null,

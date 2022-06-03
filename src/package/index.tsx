@@ -1,5 +1,4 @@
 import {
-  children,
   Component,
   createSignal,
   Index,
@@ -16,11 +15,14 @@ import {
   isString,
 } from './utils';
 import './index.scss';
+import { render } from 'solid-js/web';
 
-const Preview: Component<{
+export interface IPreview {
   data: Record<string, any> | any[];
   maxLength?: number;
-}> = ({ data, maxLength = 100 }) => {
+}
+
+const Preview: Component<IPreview> = ({ data, maxLength = 100 }) => {
   const isArr = isArray(data);
   const prefix = isArr ? '[' : '{';
   const surfix = isArr ? ']' : '}';
@@ -113,12 +115,19 @@ const Preview: Component<{
   );
 };
 
-const JsonViewComp: Component<{
+export interface IJsonViewComp {
   name: string | number;
   data: any;
   defaultOpen?: boolean;
   maxLength?: number;
-}> = ({ data, name, maxLength, defaultOpen = false }) => {
+}
+
+export const JsonViewComp: Component<IJsonViewComp> = ({
+  data,
+  name,
+  maxLength,
+  defaultOpen = false,
+}) => {
   const [isOpen, setIsOpen] = createSignal(defaultOpen);
   const Wrap: ParentComponent<{
     type: string;
@@ -207,12 +216,17 @@ const JsonViewComp: Component<{
   }
   return content;
 };
-
-export const JsonView: Component<{
+export interface IJsonView {
   json: string;
   defaultOpen?: boolean;
   maxLength?: number;
-}> = ({ json, defaultOpen, maxLength }) => {
+}
+
+export const JsonView: Component<IJsonView> = ({
+  json,
+  defaultOpen,
+  maxLength,
+}) => {
   let data: any;
   try {
     data = JSON.parse(json);
@@ -230,4 +244,8 @@ export const JsonView: Component<{
       />
     </div>
   );
+};
+
+export const renderJsonView = (element: Element, props: IJsonView) => {
+  render(() => <JsonView {...props} />, element);
 };

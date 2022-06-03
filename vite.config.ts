@@ -1,10 +1,16 @@
+import path from 'path';
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
 
 export default defineConfig({
   plugins: [solidPlugin()],
   build: {
-    target: 'esnext',
-    polyfillDynamicImport: false,
+    cssCodeSplit: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/package/index.tsx'),
+      name: 'json-view',
+      formats: ['umd'],
+      fileName: () => 'main.js',
+    },
   },
 });
