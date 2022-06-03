@@ -1,5 +1,5 @@
 {
-  "name": "json-view",
+  "name": "@frank-tomato/jsonviewer",
   "version": "1.0.0",
   "description": "Minimalistic chrome like json-viewer built with solid.js",
   "main": "dist/main.js",
