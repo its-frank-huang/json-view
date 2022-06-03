@@ -1,5 +1,4 @@
 .jsonView__details {
-  padding-left: 4ch;
   --name-color: rgb(20 133 189);
   --preview-name-color: rgb(163, 163, 163);
   --preview-color: rgb(107, 107, 107);
@@ -8,13 +7,14 @@
   --content-boolean-color: rgb(125, 13, 153);
   --content-null-color: rgb(109, 109, 109);
 }
+.jsonView__summary__name,
+.jsonView__summary::marker,
+.jsonView__summary::-webkit-details-marker {
+  cursor: pointer;
+  color: var(--marker-color);
+}
 .jsonView__summary__name {
   color: var(--name-color);
-  cursor: pointer;
-  &::marker,
-  &::-webkit-details-marker {
-    color: var(--marker-color);
-  }
 }
 .jsonView__summary__preview {
   color: var(--preview-color);

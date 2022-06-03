@@ -119,6 +119,7 @@ const JsonViewComp: Component<{
       <>
         <summary class="jsonView__summary">
           <span class="jsonView__summary__name">{name}</span>
+          {name ? ': ' : ''}
           {summaryPreview}
         </summary>
         <div
@@ -190,25 +191,9 @@ export const JsonView: Component<{ json: string }> = ({ json }) => {
     console.error(e);
     return <div>Failed to parse json.</div>;
   }
-  const isArr = isArray(data);
   return (
     <div class="jsonView__container">
-      <details class="jsonView__details">
-        <summary class="jsonView__summary">
-          {isArr ? `[${data.length}]` : `{${Object.keys(data).length}}`}
-        </summary>
-        <div class="jsonView__content">
-          {isArr ? (
-            <Index each={data()}>
-              {(value, i) => <JsonViewComp name={i} data={value()} />}
-            </Index>
-          ) : (
-            <Index each={Object.entries(data)}>
-              {(it) => <JsonViewComp name={it()[0]} data={it()[1]} />}
-            </Index>
-          )}
-        </div>
-      </details>
+      <JsonViewComp name="" data={data} />
     </div>
   );
 };
