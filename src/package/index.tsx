@@ -1,4 +1,12 @@
-import { Component, Index, JSX, ParentComponent } from 'solid-js';
+import {
+  children,
+  Component,
+  createSignal,
+  Index,
+  JSX,
+  ParentComponent,
+  Show,
+} from 'solid-js';
 import {
   isArray,
   isBoolean,
@@ -110,6 +118,7 @@ const JsonViewComp: Component<{
   data: any;
   maxLength?: number;
 }> = ({ data, name, maxLength }) => {
+  const [isOpen, setIsOpen] = createSignal(false);
   const Wrap: ParentComponent<{
     type: string;
     hasSummary?: boolean;
@@ -136,6 +145,15 @@ const JsonViewComp: Component<{
     );
 
   let content: JSX.Element;
+  const Details: ParentComponent = ({ children }) => (
+    <details
+      class="jsonView__details"
+      open={isOpen()}
+      onToggle={() => setIsOpen(!isOpen())}
+    >
+      {children}
+    </details>
+  );
   switch (true) {
     case isString(data):
       content = <Wrap type="string">"{data}"</Wrap>;
@@ -151,32 +169,36 @@ const JsonViewComp: Component<{
       break;
     case isArray(data):
       content = (
-        <details class="jsonView__details">
+        <Details>
           <Wrap
             hasSummary
             type="array"
             summaryPreview={<Preview data={data} maxLength={maxLength} />}
           >
-            <Index each={data}>
-              {(it, i) => <JsonViewComp name={i} data={it()} />}
-            </Index>
+            <Show when={isOpen()}>
+              <Index each={data}>
+                {(it, i) => <JsonViewComp name={i} data={it()} />}
+              </Index>
+            </Show>
           </Wrap>
-        </details>
+        </Details>
       );
       break;
     case isObject(data):
       content = (
-        <details class="jsonView__details">
+        <Details>
           <Wrap
             hasSummary
             type="object"
             summaryPreview={<Preview data={data} maxLength={maxLength} />}
           >
-            <Index each={Object.entries(data)}>
-              {(it) => <JsonViewComp name={it()[0]} data={it()[1]} />}
-            </Index>
+            <Show when={isOpen()}>
+              <Index each={Object.entries(data)}>
+                {(it) => <JsonViewComp name={it()[0]} data={it()[1]} />}
+              </Index>
+            </Show>
           </Wrap>
-        </details>
+        </Details>
       );
       break;
   }
