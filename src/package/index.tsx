@@ -1,4 +1,5 @@
 import {
+  children,
   Component,
   createSignal,
   Index,
@@ -16,19 +17,28 @@ import {
 } from './utils';
 import './index.scss';
 import { render } from 'solid-js/web';
-
 export interface IPreview {
   data: Record<string, any> | any[];
   maxLength?: number;
+  opened?: () => boolean;
 }
 
-const Preview: Component<IPreview> = ({ data, maxLength = 100 }) => {
+const Preview: Component<IPreview> = ({ data, maxLength = 100, opened }) => {
   const isArr = isArray(data);
   const prefix = isArr ? '[' : '{';
   const surfix = isArr ? ']' : '}';
   const content: JSX.Element[] = [];
+  const contentWhenOpened: JSX.Element[] = [];
   let count = 2;
   const dataArr = isArr ? data : Object.entries(data);
+
+  if (isArr) {
+    contentWhenOpened.push(
+      <span class="jsonView__summary__preview__value jsonView__summary__preview__value__null">
+        Array({data.length})
+      </span>,
+    );
+  }
   for (let i = 0; i < dataArr.length; i++) {
     const key = isArr ? i : dataArr[i][0];
     const value = isArr ? dataArr[i] : dataArr[i][1];
@@ -106,11 +116,21 @@ const Preview: Component<IPreview> = ({ data, maxLength = 100 }) => {
     }
   }
 
+  const renderContent = () => {
+    if (isArray(data) && opened && opened()) {
+      return <Index each={contentWhenOpened}>{(item) => item()}</Index>;
+    } else {
+      return <Index each={content}>{(item) => item()}</Index>;
+    }
+  };
+
   return (
     <span class="jsonView__summary__preview">
       <span class="jsonView__summary__preview__prefix">{prefix}</span>
-      <Index each={content}>{(item) => item()}</Index>
-      <span class="jsonView__summary__preview__surfix">{surfix}</span>
+      {renderContent()}
+      {(opened ? !opened() : true) && (
+        <span class="jsonView__summary__preview__surfix">{surfix}</span>
+      )}
     </span>
   );
 };
@@ -122,13 +142,26 @@ export interface IJsonViewComp {
   maxLength?: number;
 }
 
-export const JsonViewComp: Component<IJsonViewComp> = ({
+const JsonViewComp: Component<IJsonViewComp> = ({
   data,
   name,
   maxLength,
   defaultOpen = false,
 }) => {
   const [isOpen, setIsOpen] = createSignal(defaultOpen);
+  const copyProps = (stringify = false) => ({
+    title: 'Double click to copy value',
+    onDblClick: () => {
+      // copy to clipboard
+      const el = document.createElement('textarea');
+      el.style.opacity = '0';
+      el.value = stringify ? JSON.stringify(data) : data;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    },
+  });
   const Wrap: ParentComponent<{
     type: string;
     hasSummary?: boolean;
@@ -136,7 +169,10 @@ export const JsonViewComp: Component<IJsonViewComp> = ({
   }> = ({ type, children, hasSummary = false, summaryPreview }) =>
     hasSummary ? (
       <>
-        <summary class="jsonView__summary">
+        <summary
+          class={`${isOpen() && 'jsonView__summary__open'} jsonView__summary`}
+          {...copyProps(true)}
+        >
           <span class="jsonView__summary__name">{name}</span>
           {name ? ': ' : ''}
           {summaryPreview}
@@ -146,10 +182,17 @@ export const JsonViewComp: Component<IJsonViewComp> = ({
         >
           {children}
         </div>
+        {['object', 'array'].includes(type) && (
+          <span class="jsonView__summary__preview__surfix">
+            {type === 'array' ? ']' : '}'}
+          </span>
+        )}
       </>
     ) : (
       <div class={`jsonView__content jsonView__content__${type}`}>
-        <span class="jsonView__content__name">{name}</span>
+        <span class="jsonView__content__name" {...copyProps()}>
+          {name}
+        </span>
         <span class="jsonView__content__data">{children}</span>
       </div>
     );
@@ -185,7 +228,9 @@ export const JsonViewComp: Component<IJsonViewComp> = ({
           <Wrap
             hasSummary
             type="array"
-            summaryPreview={<Preview data={data} maxLength={maxLength} />}
+            summaryPreview={
+              <Preview data={data} maxLength={maxLength} opened={isOpen} />
+            }
           >
             <Show when={isOpen()}>
               <Index each={data}>
@@ -202,7 +247,9 @@ export const JsonViewComp: Component<IJsonViewComp> = ({
           <Wrap
             hasSummary
             type="object"
-            summaryPreview={<Preview data={data} maxLength={maxLength} />}
+            summaryPreview={
+              <Preview data={data} maxLength={maxLength} opened={isOpen} />
+            }
           >
             <Show when={isOpen()}>
               <Index each={Object.entries(data)}>
@@ -216,6 +263,7 @@ export const JsonViewComp: Component<IJsonViewComp> = ({
   }
   return content;
 };
+
 export interface IJsonView {
   json: string;
   defaultOpen?: boolean;
