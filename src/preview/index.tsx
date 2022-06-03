@@ -1,7 +1,7 @@
 /* @refresh reload */
-import { render } from 'solid-js/web';
-import { JsonView } from '../package';
-import './preview.css';
+import { render } from "solid-js/web";
+import { JsonView } from "../package";
+import "./preview.css";
 const data = `{
   "TRIGGER_SPLIT": {
     "null": null,
@@ -19,12 +19,12 @@ const data = `{
   }
 }`;
 const App = () => {
-  console.log(JSON.parse(data));
-  return (
-    <div>
-      <JsonView json={data} defaultOpen />
-    </div>
-  );
+	console.log(JSON.parse(data));
+	return (
+		<div>
+			<JsonView json={data} defaultOpen />
+		</div>
+	);
 };
 
-render(() => <App />, document.getElementById('root') as HTMLElement);
+render(() => <App />, document.getElementById("root") as HTMLElement);
