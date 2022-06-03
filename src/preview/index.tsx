@@ -22,7 +22,7 @@ const App = () => {
   console.log(JSON.parse(data));
   return (
     <div>
-      <JsonView json={data} />
+      <JsonView json={data} defaultOpen />
     </div>
   );
 };

@@ -116,9 +116,10 @@ const Preview: Component<{
 const JsonViewComp: Component<{
   name: string | number;
   data: any;
+  defaultOpen?: boolean;
   maxLength?: number;
-}> = ({ data, name, maxLength }) => {
-  const [isOpen, setIsOpen] = createSignal(false);
+}> = ({ data, name, maxLength, defaultOpen = false }) => {
+  const [isOpen, setIsOpen] = createSignal(defaultOpen);
   const Wrap: ParentComponent<{
     type: string;
     hasSummary?: boolean;
@@ -149,7 +150,9 @@ const JsonViewComp: Component<{
     <details
       class="jsonView__details"
       open={isOpen()}
-      onToggle={() => setIsOpen(!isOpen())}
+      onToggle={(e) => {
+        setIsOpen((e.target as any).open);
+      }}
     >
       {children}
     </details>
@@ -205,7 +208,11 @@ const JsonViewComp: Component<{
   return content;
 };
 
-export const JsonView: Component<{ json: string }> = ({ json }) => {
+export const JsonView: Component<{
+  json: string;
+  defaultOpen?: boolean;
+  maxLength?: number;
+}> = ({ json, defaultOpen, maxLength }) => {
   let data: any;
   try {
     data = JSON.parse(json);
@@ -215,7 +222,12 @@ export const JsonView: Component<{ json: string }> = ({ json }) => {
   }
   return (
     <div class="jsonView__container">
-      <JsonViewComp name="" data={data} />
+      <JsonViewComp
+        name=""
+        data={data}
+        defaultOpen={defaultOpen}
+        maxLength={maxLength}
+      />
     </div>
   );
 };
