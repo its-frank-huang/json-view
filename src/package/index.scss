@@ -3,9 +3,11 @@
   --preview-name-color: rgb(163, 163, 163);
   --preview-color: rgb(107, 107, 107);
   --marker-color: rgb(170, 170, 170);
+  --marker-open-color: rgb(8, 200, 226);
   --content-string-color: rgb(7, 124, 1);
   --content-boolean-color: rgb(125, 13, 153);
   --content-null-color: rgb(109, 109, 109);
+  --left-border-indicator-color: rgb(184, 182, 182);
 }
 .jsonView__summary__name,
 .jsonView__summary::marker,
@@ -13,8 +15,16 @@
   cursor: pointer;
   color: var(--marker-color);
 }
+
+.open.jsonView__summary::marker,
+.open.jsonView__summary::-webkit-details-marker {
+  cursor: pointer;
+  color: var(--marker-open-color);
+}
+
 .jsonView__summary__name {
   color: var(--name-color);
+  padding: 2px;
 }
 .jsonView__summary__preview {
   color: var(--preview-color);
@@ -48,4 +58,13 @@
 .jsonView__content__null .jsonView__content__data,
 .jsonView__summary__preview__value__null {
   color: var(--content-null-color);
+}
+
+.jsonView__content__object, .jsonView__content__array  {
+  box-shadow: inset 4px -2px white, inset 0 2px white, inset 5px 0 0 0 var(--left-border-indicator-color);
+}
+
+.hoverable:hover {
+  background-color: rgba(82, 124, 195, 0.484);
+  border-radius: 3px;
 }
