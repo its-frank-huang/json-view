@@ -1,6 +1,6 @@
 {
   "name": "json-view",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Minimalistic chrome like json-viewer built with solid.js",
   "main": "dist/main.js",
   "scripts": {
