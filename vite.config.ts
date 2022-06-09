@@ -1,15 +1,16 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
 export default defineConfig({
-  plugins: [solidPlugin()],
+  plugins: [solidPlugin(), cssInjectedByJsPlugin()],
   build: {
-    cssCodeSplit: true,
+    cssCodeSplit: false,
     lib: {
       entry: path.resolve(__dirname, 'src/package/index.tsx'),
       name: 'json-view',
-      formats: ['umd'],
+      formats: ['es'],
       fileName: () => 'index.js',
     },
   },
