@@ -10,7 +10,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/package/index.tsx'),
       name: 'json-view',
       formats: ['umd'],
-      fileName: () => 'main.js',
+      fileName: () => 'index.js',
     },
   },
 });
