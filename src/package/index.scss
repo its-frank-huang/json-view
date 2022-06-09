@@ -59,9 +59,3 @@
 .jsonView__summary__preview__value__null {
   color: var(--content-null-color);
 }
-
-.jsonView__content__object,
-.jsonView__content__array {
-  box-shadow: inset 4px -2px white, inset 0 2px white,
-    inset 5px 0 0 0 var(--left-border-indicator-color);
-}
