@@ -17,6 +17,8 @@ import {
 } from './utils';
 import './index.scss';
 import { render } from 'solid-js/web';
+export * from './utils';
+
 export interface IPreview {
   data: Record<string, any> | any[];
   maxLength?: number;
