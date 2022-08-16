@@ -141,6 +141,7 @@ export interface IJsonViewComp {
   name: string | number;
   data: any;
   defaultOpen?: boolean;
+  depthIndicator?: boolean;
   maxLength?: number;
 }
 
@@ -148,6 +149,7 @@ const JsonViewComp: Component<IJsonViewComp> = ({
   data,
   name,
   maxLength,
+  depthIndicator = true,
   defaultOpen = false,
 }) => {
   const [isOpen, setIsOpen] = createSignal(defaultOpen);
@@ -180,7 +182,9 @@ const JsonViewComp: Component<IJsonViewComp> = ({
           {summaryPreview}
         </summary>
         <div
-          class={`jsonView__content jsonView__content_wrapper jsonView__content__${type}`}
+          class={`jsonView__content jsonView__content_wrapper jsonView__content__${type} ${
+            depthIndicator ? 'jsonView__depth_indicator' : ''
+          }`}
         >
           {children}
         </div>
@@ -236,7 +240,13 @@ const JsonViewComp: Component<IJsonViewComp> = ({
           >
             <Show when={isOpen()}>
               <Index each={data}>
-                {(it, i) => <JsonViewComp name={i} data={it()} />}
+                {(it, i) => (
+                  <JsonViewComp
+                    name={i}
+                    data={it()}
+                    depthIndicator={depthIndicator}
+                  />
+                )}
               </Index>
             </Show>
           </Wrap>
@@ -255,7 +265,13 @@ const JsonViewComp: Component<IJsonViewComp> = ({
           >
             <Show when={isOpen()}>
               <Index each={Object.entries(data)}>
-                {(it) => <JsonViewComp name={it()[0]} data={it()[1]} />}
+                {(it) => (
+                  <JsonViewComp
+                    name={it()[0]}
+                    data={it()[1]}
+                    depthIndicator={depthIndicator}
+                  />
+                )}
               </Index>
             </Show>
           </Wrap>
@@ -268,14 +284,28 @@ const JsonViewComp: Component<IJsonViewComp> = ({
 
 export interface IJsonView {
   json: string;
+  /**Should the component open first cascade when mounted.
+   *
+   * default: false
+   */
   defaultOpen?: boolean;
+  /**Control the length of the preivew text.
+   *
+   * default: 100
+   */
   maxLength?: number;
+  /**Show depth indicator or not
+   *
+   * default: true
+   */
+  depthIndicator?: boolean;
 }
 
 export const JsonView: Component<IJsonView> = ({
   json,
   defaultOpen,
   maxLength,
+  depthIndicator,
 }) => {
   let data: any;
   try {
@@ -291,6 +321,7 @@ export const JsonView: Component<IJsonView> = ({
         data={data}
         defaultOpen={defaultOpen}
         maxLength={maxLength}
+        depthIndicator={depthIndicator}
       />
     </div>
   );

@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     cssCodeSplit: false,
     lib: {
-      entry: path.resolve(__dirname, 'src/package/index.tsx'),
+      entry: path.resolve(__dirname, 'src/index.tsx'),
       name: 'json-view',
       formats: ['es'],
       fileName: () => 'index.js',
