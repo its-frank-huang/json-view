@@ -1,5 +1,7 @@
 # jsonviewer
 
+![showcase](/assets/showcase.png)
+
 ## What?
 
 jsonviewer is a blazingly fast component for creating cascade json view, written in solidjs.
